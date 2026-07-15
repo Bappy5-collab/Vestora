@@ -19,8 +19,10 @@ export default function Footer() {
         <Stack
           direction={{ xs: "column", sm: "row" }}
           spacing={2}
-          justifyContent="space-between"
-          alignItems={{ xs: "flex-start", sm: "center" }}
+          sx={{
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", sm: "center" },
+          }}
         >
           <Typography
             variant="h6"

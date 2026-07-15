@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { createTheme } from "@mui/material/styles";
 
 const heading = {
@@ -49,6 +50,12 @@ const theme = createTheme({
     borderRadius: 4,
   },
   components: {
+    // Lets any ButtonBase (Button, CardActionArea, IconButton...) client-side
+    // navigate with just an `href`, so Server Components don't have to pass
+    // next/link across the server-client boundary.
+    MuiButtonBase: {
+      defaultProps: { LinkComponent: Link },
+    },
     MuiButton: {
       defaultProps: { disableElevation: true },
     },
