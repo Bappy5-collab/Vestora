@@ -1,13 +1,13 @@
 import { Container, Typography } from "@mui/material";
 
-export default function HomePage() {
+export default function CartPage() {
   return (
     <Container maxWidth="lg" sx={{ py: 6 }}>
       <Typography variant="h1" gutterBottom>
-        New Season Edit
+        Your Cart
       </Typography>
       <Typography color="text.secondary">
-        Hero banner and featured products coming soon.
+        Cart items and order summary coming soon.
       </Typography>
     </Container>
   );
