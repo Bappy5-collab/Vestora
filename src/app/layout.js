@@ -1,6 +1,7 @@
 import { Inter, Playfair_Display } from "next/font/google";
 import { Box } from "@mui/material";
 import ThemeRegistry from "@/components/ThemeRegistry";
+import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -26,13 +27,15 @@ export default function RootLayout({ children }) {
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <body>
         <ThemeRegistry>
-          <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
-            <Navbar />
-            <Box component="main" sx={{ flexGrow: 1 }}>
-              {children}
+          <CartProvider>
+            <Box sx={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
+              <Navbar />
+              <Box component="main" sx={{ flexGrow: 1 }}>
+                {children}
+              </Box>
+              <Footer />
             </Box>
-            <Footer />
-          </Box>
+          </CartProvider>
         </ThemeRegistry>
       </body>
     </html>
