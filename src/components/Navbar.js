@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
+import { useCart } from "@/context/CartContext";
 
 const NAV_LINKS = [
   { label: "Home", href: "/" },
@@ -27,12 +28,10 @@ const NAV_LINKS = [
 
 const CART_LINK = { label: "Cart", href: "/cart" };
 
-// Wired up to the cart context in a later phase.
-const CART_COUNT = 0;
-
 export default function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const { itemCount } = useCart();
 
   const isActive = (href) =>
     href === "/" ? pathname === "/" : pathname.startsWith(href);
@@ -88,10 +87,10 @@ export default function Navbar() {
           <IconButton
             component={Link}
             href={CART_LINK.href}
-            aria-label={`Cart, ${CART_COUNT} items`}
+            aria-label={`Cart, ${itemCount} ${itemCount === 1 ? "item" : "items"}`}
             sx={{ color: isActive(CART_LINK.href) ? "text.primary" : "text.secondary" }}
           >
-            <Badge badgeContent={CART_COUNT} color="secondary" showZero>
+            <Badge badgeContent={itemCount} color="secondary" showZero>
               <ShoppingBagOutlinedIcon />
             </Badge>
           </IconButton>
