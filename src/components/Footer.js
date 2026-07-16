@@ -11,10 +11,7 @@ const FOOTER_LINKS = [
 
 export default function Footer() {
   return (
-    <Box
-      component="footer"
-      sx={{ borderTop: 1, borderColor: "divider", mt: 8, py: 5 }}
-    >
+    <Box component="footer" sx={{ bgcolor: "#111827", color: "#fff", mt: 8, py: 6 }}>
       <Container maxWidth="lg">
         <Stack
           direction={{ xs: "column", sm: "row" }}
@@ -24,12 +21,14 @@ export default function Footer() {
             alignItems: { xs: "flex-start", sm: "center" },
           }}
         >
-          <Typography
-            variant="h6"
-            sx={{ textTransform: "uppercase", letterSpacing: "0.2em" }}
-          >
-            Vestora
-          </Typography>
+          <Box>
+            <Typography variant="h6" sx={{ fontWeight: 800 }}>
+              Vestora
+            </Typography>
+            <Typography variant="body2" sx={{ mt: 0.5, color: "rgba(255,255,255,0.6)" }}>
+              Timeless pieces, made for everyday.
+            </Typography>
+          </Box>
 
           <Stack direction="row" spacing={3}>
             {FOOTER_LINKS.map((link) => (
@@ -39,7 +38,10 @@ export default function Footer() {
                 href={link.href}
                 underline="hover"
                 variant="body2"
-                color="text.secondary"
+                sx={{
+                  color: "rgba(255,255,255,0.6)",
+                  "&:hover": { color: "#fff" },
+                }}
               >
                 {link.label}
               </MuiLink>
@@ -47,7 +49,11 @@ export default function Footer() {
           </Stack>
         </Stack>
 
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 3 }}>
+        <Typography
+          variant="body2"
+          sx={{ mt: 4, color: "rgba(255,255,255,0.4)" }}
+          suppressHydrationWarning
+        >
           © {new Date().getFullYear()} Vestora. All rights reserved.
         </Typography>
       </Container>

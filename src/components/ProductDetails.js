@@ -23,13 +23,14 @@ import { useCart } from "@/context/CartContext";
 
 export default function ProductDetails({ product }) {
   const { addToCart } = useCart();
+  const images = [product.image, ...(product.gallery || [])];
+  const [mainImage, setMainImage] = useState(product.image);
   const [color, setColor] = useState(product.colors[0]);
   const [size, setSize] = useState(product.sizes[0]);
   const [quantity, setQuantity] = useState(1);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmKey, setConfirmKey] = useState(0);
 
-  // ToggleButtonGroup sends null when the active button is clicked again.
   const handleColorChange = (event, next) => {
     if (next !== null) setColor(next);
   };
@@ -40,8 +41,6 @@ export default function ProductDetails({ product }) {
 
   const handleAddToCart = () => {
     addToCart(product, { color, size, quantity });
-    // Remounting on every add restarts the auto-hide timer, which otherwise only
-    // runs when `open` flips false -> true and would cut a repeat add's message short.
     setConfirmKey((current) => current + 1);
     setConfirmOpen(true);
   };
@@ -60,13 +59,13 @@ export default function ProductDetails({ product }) {
               position: "relative",
               aspectRatio: "4 / 5",
               overflow: "hidden",
-              border: 1,
-              borderColor: "divider",
+              borderRadius: 2,
               bgcolor: "background.paper",
+              boxShadow: "0 1px 3px rgba(17, 24, 39, 0.08)",
             }}
           >
             <Image
-              src={product.image}
+              src={mainImage}
               alt={product.name}
               fill
               preload
@@ -74,6 +73,42 @@ export default function ProductDetails({ product }) {
               style={{ objectFit: "cover" }}
             />
           </Box>
+
+          {images.length > 1 && (
+            <Stack direction="row" spacing={1.5} sx={{ mt: 2 }}>
+              {images.map((img) => (
+                <Box
+                  key={img}
+                  component="button"
+                  type="button"
+                  onClick={() => setMainImage(img)}
+                  sx={{
+                    position: "relative",
+                    width: 72,
+                    aspectRatio: "4 / 5",
+                    p: 0,
+                    overflow: "hidden",
+                    cursor: "pointer",
+                    borderRadius: 1,
+                    bgcolor: "background.paper",
+                    border: 2,
+                    borderColor: img === mainImage ? "primary.main" : "transparent",
+                    opacity: img === mainImage ? 1 : 0.7,
+                    transition: "all 0.2s",
+                    "&:hover": { opacity: 1 },
+                  }}
+                >
+                  <Image
+                    src={img}
+                    alt=""
+                    fill
+                    sizes="72px"
+                    style={{ objectFit: "cover" }}
+                  />
+                </Box>
+              ))}
+            </Stack>
+          )}
         </Grid>
 
         <Grid size={{ xs: 12, md: 6 }}>
@@ -81,8 +116,7 @@ export default function ProductDetails({ product }) {
             <Chip
               label={product.category}
               size="small"
-              variant="outlined"
-              sx={{ textTransform: "uppercase", letterSpacing: "0.08em" }}
+              sx={{ bgcolor: "rgba(79, 70, 229, 0.08)", color: "primary.main" }}
             />
             <Chip
               label={product.inStock ? "In stock" : "Out of stock"}
@@ -103,7 +137,7 @@ export default function ProductDetails({ product }) {
             </Typography>
           </Stack>
 
-          <Typography variant="h5" sx={{ mt: 2, fontWeight: 600 }}>
+          <Typography variant="h4" sx={{ mt: 2, color: "primary.main" }}>
             ${product.price.toFixed(2)}
           </Typography>
 
@@ -113,41 +147,45 @@ export default function ProductDetails({ product }) {
 
           <Divider sx={{ my: 3 }} />
 
-          <Typography variant="subtitle2" gutterBottom>
-            Color: {color}
-          </Typography>
-          <ToggleButtonGroup
-            value={color}
-            exclusive
-            onChange={handleColorChange}
-            size="small"
-            aria-label="Select a colour"
-            sx={{ flexWrap: "wrap" }}
-          >
-            {product.colors.map((option) => (
-              <ToggleButton key={option} value={option}>
-                {option}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
+          <Box sx={{ display: "flex", gap: 4, flexWrap: "wrap" }}>
+            <Box>
+              <Typography variant="subtitle2" gutterBottom>
+                Color: {color}
+              </Typography>
+              <ToggleButtonGroup
+                value={color}
+                exclusive
+                onChange={handleColorChange}
+                size="small"
+                aria-label="Select a colour"
+              >
+                {product.colors.map((option) => (
+                  <ToggleButton key={option} value={option}>
+                    {option}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </Box>
 
-          <Typography variant="subtitle2" gutterBottom sx={{ mt: 3 }}>
-            Size: {size}
-          </Typography>
-          <ToggleButtonGroup
-            value={size}
-            exclusive
-            onChange={handleSizeChange}
-            size="small"
-            aria-label="Select a size"
-            sx={{ flexWrap: "wrap" }}
-          >
-            {product.sizes.map((option) => (
-              <ToggleButton key={option} value={option}>
-                {option}
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
+            <Box>
+              <Typography variant="subtitle2" gutterBottom>
+                Size: {size}
+              </Typography>
+              <ToggleButtonGroup
+                value={size}
+                exclusive
+                onChange={handleSizeChange}
+                size="small"
+                aria-label="Select a size"
+              >
+                {product.sizes.map((option) => (
+                  <ToggleButton key={option} value={option}>
+                    {option}
+                  </ToggleButton>
+                ))}
+              </ToggleButtonGroup>
+            </Box>
+          </Box>
 
           <Typography variant="subtitle2" gutterBottom sx={{ mt: 3 }}>
             Quantity
@@ -157,9 +195,9 @@ export default function ProductDetails({ product }) {
             sx={{
               alignItems: "center",
               width: "fit-content",
-              border: 1,
-              borderColor: "divider",
-              borderRadius: 1,
+              bgcolor: "background.default",
+              borderRadius: 999,
+              px: 0.5,
             }}
           >
             <IconButton
@@ -169,7 +207,10 @@ export default function ProductDetails({ product }) {
             >
               <RemoveIcon fontSize="small" />
             </IconButton>
-            <Typography sx={{ minWidth: 40, textAlign: "center" }} aria-live="polite">
+            <Typography
+              sx={{ minWidth: 40, textAlign: "center", fontWeight: 600 }}
+              aria-live="polite"
+            >
               {quantity}
             </Typography>
             <IconButton

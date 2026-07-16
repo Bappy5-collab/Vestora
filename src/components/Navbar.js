@@ -39,9 +39,14 @@ export default function Navbar() {
   return (
     <AppBar
       position="sticky"
-      color="inherit"
       elevation={0}
-      sx={{ borderBottom: 1, borderColor: "divider" }}
+      sx={{
+        bgcolor: "rgba(255, 255, 255, 0.8)",
+        backdropFilter: "blur(12px)",
+        color: "text.primary",
+        borderBottom: 1,
+        borderColor: "divider",
+      }}
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ gap: 1 }}>
@@ -62,9 +67,9 @@ export default function Navbar() {
               flexGrow: { xs: 1, md: 0 },
               mr: { md: 4 },
               textDecoration: "none",
-              textTransform: "uppercase",
-              letterSpacing: "0.2em",
-              color: "text.primary",
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+              color: "primary.main",
             }}
           >
             Vestora
@@ -76,8 +81,14 @@ export default function Navbar() {
                 key={link.href}
                 component={Link}
                 href={link.href}
-                color="inherit"
-                sx={{ color: isActive(link.href) ? "text.primary" : "text.secondary" }}
+                sx={{
+                  color: isActive(link.href) ? "primary.main" : "text.secondary",
+                  bgcolor: isActive(link.href) ? "rgba(79, 70, 229, 0.08)" : "transparent",
+                  "&:hover": {
+                    color: "primary.main",
+                    bgcolor: "rgba(79, 70, 229, 0.08)",
+                  },
+                }}
               >
                 {link.label}
               </Button>
@@ -88,24 +99,29 @@ export default function Navbar() {
             component={Link}
             href={CART_LINK.href}
             aria-label={`Cart, ${itemCount} ${itemCount === 1 ? "item" : "items"}`}
-            sx={{ color: isActive(CART_LINK.href) ? "text.primary" : "text.secondary" }}
+            sx={{
+              color: isActive(CART_LINK.href) ? "primary.main" : "text.secondary",
+              bgcolor: "background.default",
+              transition: "all 0.2s",
+              "&:hover": { color: "primary.main" },
+            }}
           >
-            <Badge badgeContent={itemCount} color="secondary" showZero>
-              <ShoppingBagOutlinedIcon />
+            <Badge badgeContent={itemCount} color="primary" showZero>
+              <ShoppingBagOutlinedIcon fontSize="small" />
             </Badge>
           </IconButton>
         </Toolbar>
       </Container>
 
       <Drawer open={open} onClose={() => setOpen(false)}>
-        <Box sx={{ width: 240 }} role="presentation" onClick={() => setOpen(false)}>
+        <Box sx={{ width: 260, p: 1 }} role="presentation" onClick={() => setOpen(false)}>
           <Typography
             variant="h6"
             sx={{
               px: 2,
               py: 2.5,
-              textTransform: "uppercase",
-              letterSpacing: "0.2em",
+              fontWeight: 800,
+              color: "primary.main",
             }}
           >
             Vestora
@@ -117,6 +133,7 @@ export default function Navbar() {
                 component={Link}
                 href={link.href}
                 selected={isActive(link.href)}
+                sx={{ borderRadius: 2 }}
               >
                 <ListItemText primary={link.label} />
               </ListItemButton>
