@@ -340,11 +340,35 @@ export default function Page() {
             </Box>
           )}
 
+          {/* credit line — investigation team */}
+          <Box
+            sx={{
+              mt: 6,
+              pt: 3,
+              borderTop: `1px dashed ${tokens.hairline}`,
+              maxWidth: 520,
+              mx: "auto",
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { xs: 13, sm: 14 },
+                color: tokens.textMuted,
+                lineHeight: 1.9,
+              }}
+            >
+              এডভোকেট <Box component="span" sx={{ color: tokens.text, fontWeight: 700 }}>অরুপ সাহা</Box>-র
+              হাত ধরে, ওসি <Box component="span" sx={{ color: tokens.text, fontWeight: 700 }}>সজীব কুমার সাহা</Box>-র
+              অধীনে, <Box component="span" sx={{ color: tokens.text, fontWeight: 700 }}>সাগর কুমার সাহা</Box>-র
+              দূরদর্শিতায় প্রকাশ হবে আজকের আসামির পরিচয়।
+            </Typography>
+          </Box>
+
           {/* footer note */}
           <Typography
             className={mono.className}
             sx={{
-              mt: 6,
+              mt: 3,
               fontSize: 11,
               letterSpacing: "0.15em",
               color: tokens.textMuted,
